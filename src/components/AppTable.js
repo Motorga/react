@@ -18,7 +18,7 @@ const AppTable = ({
             </tr>
         </thead>
         <tbody className="text-center">
-            { values.map((value, index) => (
+            { values?.map((value, index) => (
                 <tr key={index}>
                     { cols.map((col, index) => {
                         if (col.key === 'actions') {
