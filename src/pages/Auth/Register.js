@@ -11,6 +11,7 @@ import { registerMember } from '../../services/authService';
 import { toastNotification } from '../../helpers/Toastify';
 import UserContext from '../../contexts/UserContext';
 import TokenContext from '../../contexts/TokenContext';
+import { jsonStringify } from '../../helpers/helper';
 
 const promotions = ['1I', '1A', '2I', '2A', '3A', '4A', '5A'];
 
@@ -43,7 +44,7 @@ const Register = () => {
             if (result?.token) {
                 setToken(result.token);
                 const user = jwt_decode(result.token);
-                setUser(user)
+                setUser(jsonStringify(user))
                 toastNotification('success', `Bienvenue sur Motorga ${user.firstname}!`);
                 history.push('/');
             }
