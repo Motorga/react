@@ -27,6 +27,7 @@ const AppTable = ({
                                     <AppTableActions
                                         id={value.id}
                                         open={value.open}
+                                        status={value.status}
                                         handleAddClick={handleAddClick}
                                         handleMinusClick={handleMinusClick}
                                         handleResetClick={handleResetClick}

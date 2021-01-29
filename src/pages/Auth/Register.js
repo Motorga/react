@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import jwt_decode from 'jwt-decode';
 
 import Error from '../../components/Error';
-import authService from '../../services/authService';
+import { registerMember } from '../../services/authService';
 import { toastNotification } from '../../helpers/Toastify';
 import UserContext from '../../contexts/UserContext';
 import TokenContext from '../../contexts/TokenContext';
@@ -28,9 +28,6 @@ const Register = () => {
     }
 
     const validationSchema = Yup.object().shape({
-        email: Yup.string()
-            .email('L\'email est invalide')
-            .required('L\'email est obligatoire'),
         lastname: Yup.string().required('Le nom est obligatoire'),
         firstname: Yup.string().required('Le prénom est obligatoire'),
         password: Yup.string().required('Le mot de passe est obligatoire'),
@@ -41,15 +38,17 @@ const Register = () => {
         resolver: yupResolver(validationSchema)
     });
 
-    const onSubmit = useCallback(({ email, password, lastname, firstname, promotion }, event) => {
-        authService.register(email, password, lastname, firstname, promotion).then(({token}) => {
-            setToken(token);
-            const user = jwt_decode(token);
-            setUser(user)
-            toastNotification('success', `Bienvenue sur Motorga ${user.firstname}!`);
-            history.push('/');
+    const onSubmit = useCallback(({ password, lastname, firstname, promotion }, event) => {
+        registerMember(urlToken, password, lastname, firstname, promotion).then(result => {
+            if (result?.token) {
+                setToken(result.token);
+                const user = jwt_decode(result.token);
+                setUser(user)
+                toastNotification('success', `Bienvenue sur Motorga ${user.firstname}!`);
+                history.push('/');
+            }
         });
-    }, []);
+    }, [urlToken, setToken, setUser, history]);
 
     return (
         <div className="col-xs-12 col-sm-6 offset-sm-3 col-lg-4 offset-lg-4 mt-5">

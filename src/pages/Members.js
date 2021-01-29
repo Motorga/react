@@ -1,11 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Plus, ArrowCounterclockwise } from 'react-bootstrap-icons';
+import { ArrowCounterclockwise } from 'react-bootstrap-icons';
 import AppBottomTooltip from '../components/AppBottomTooltip';
 import AppTable from '../components/AppTable';
+import InviteUser from '../components/InviteUser';
 import UserContext from '../contexts/UserContext';
 import { jsonParse } from '../helpers/helper';
-import { getUsers, updateOpenToUser, resetAllOpen } from '../services/userService';
+import { toastNotification } from '../helpers/Toastify';
+import { getUsers, updateOpenToUser, resetAllOpen, inviteMember } from '../services/userService';
 
 const Members = () => {
     const { user } = useContext(UserContext);
@@ -13,7 +15,7 @@ const Members = () => {
 
     const [ users, setUsers ] = useState([]);
     const commonCols = [
-        { label: 'Nom et prénom', key: 'name', onClick: (id) => console.log(id) },
+        { label: 'Nom et prénom', key: 'name' },
         { label: 'Promotion', key: 'promotion' },
         { label: 'Moto', key: 'bike' },
     ]
@@ -21,6 +23,7 @@ const Members = () => {
 
     if (role === 'ADMIN') {
         additionalCols = [
+            { label: 'Status', key: 'status' },
             { label: 'Points OPEN', key: 'open' },
             { label: 'Actions', key: 'actions' }
         ]
@@ -29,15 +32,19 @@ const Members = () => {
     const cols = [...commonCols, ...additionalCols];
 
     const fetchUsers = useCallback(() => {
-        getUsers().then(users => {
-            console.log('fetched users')
-            console.log(users)
+        let status = ['ENABLED'];
+        
+        if (role === 'ADMIN') {
+            status = ['ENABLED', 'PENDING', 'DISABLED']
+        }
+        
+        getUsers(status).then(users => {
             const usersWithName = users.map(user => {
                 return {...user, name: `${user.lastname} ${user.firstname}`};
             })
             setUsers(usersWithName);
         })
-    })
+    }, [role])
 
     useEffect(() => {
         fetchUsers();
@@ -55,23 +62,33 @@ const Members = () => {
         updateOpenToUser(id, 0).then(() => fetchUsers());
     }, [fetchUsers]);
 
-    const handleResetAllClick = useCallback(async () => {
+    const handleResetAllClick = useCallback(() => {
         if (window.confirm('Es tu sûr de vouloir remettre à 0 les points OPEN de tous les membres?')) {
             resetAllOpen().then(() => {
-                console.log('reseted all')
                 fetchUsers()
             });
         }
-    }, []);
+    }, [fetchUsers]);
+
+    const handleInviteClick = useCallback(async email => {
+        const result = await inviteMember(email);
+
+        if (result) {
+            toastNotification('success', 'Le membre a bien été invité');
+            fetchUsers();
+        }
+    }, [fetchUsers]);
 
     return (
         <div className="container">
-            <div className="text-center mb-5">
+            <div className="text-center mb-3">
                 <h1>Liste des membres</h1>
             </div>
             { role === 'ADMIN' && (
-                <div className="d-flex justify-content-between mb-5">
-                    <Button onClick={() => {}} variant="primary"> <Plus size={24} />&nbsp;Ajouter un utilisateur</Button>
+                <div className="row justify-content-between align-items-center mb-3">
+                    <div className="col-5">
+                        <InviteUser handleInviteClick={handleInviteClick} />
+                    </div>
                     <AppBottomTooltip tooltipText="Reset tous les points de tous les membres">
                         <Button onClick={handleResetAllClick} variant="dark"> <ArrowCounterclockwise size={24} />&nbsp;Reset all</Button>
                     </AppBottomTooltip>

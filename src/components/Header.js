@@ -14,7 +14,7 @@ const Header = () => {
         setToken('');
         setUser({});
         history.push('/login');
-    }, []);
+    }, [setToken, setUser, history]);
 
     return (
         <Navbar collapseOnSelect expand="md" bg="light" variant="light" sticky="top">

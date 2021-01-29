@@ -2,22 +2,23 @@ import { gql } from '@apollo/client';
 import { apolloClient } from './apolloClient';
 import { toastNotification } from '../helpers/Toastify';
 
-export const getUsers = () => {
+export const getUsers = (status) => {
     return apolloClient.query({
         query: gql`
-            query ($token: String) {
-                users (where: { token: $token}) {
+            query ($status: [Status!]) {
+                users (where: { status_in: $status}) {
                     id,
                     lastname,
                     firstname,
+                    bike,
                     open,
                     promotion,
-                    bike
+                    status
                 }
             }
         `,
         variables: {
-            token: null
+            status
         }
     })
     .then(result => result.data.users)
@@ -46,8 +47,8 @@ export const updateOpenToUser = (id, open) => {
 export const resetAllOpen = () => {
     return apolloClient.mutate({
         mutation: gql`
-            mutation($id: ID) {
-                resetAllOpen(id: $id) {
+            mutation {
+                resetAllOpen {
                     id
                     open
                 }
@@ -55,5 +56,23 @@ export const resetAllOpen = () => {
         `,
     })
     .then(result => result.data.resetAllOpen)
+    .catch(error => toastNotification('error', error.message));
+}
+
+export const inviteMember = email => {
+    return apolloClient.mutate({
+        mutation: gql`
+            mutation($email: String!) {
+                inviteMember(email: $email) {
+                    id
+                    email
+                }
+            }
+        `,
+        variables: {
+            email
+        }
+    })
+    .then(result => result.data.inviteMember)
     .catch(error => toastNotification('error', error.message));
 }

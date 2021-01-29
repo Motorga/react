@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import jwt_decode from 'jwt-decode';
 
 import Error from '../../components/Error';
-import authService from '../../services/authService';
+import { login } from '../../services/authService';
 import UserContext from '../../contexts/UserContext';
 import TokenContext from '../../contexts/TokenContext';
 import { jsonStringify } from '../../helpers/helper';
@@ -29,7 +29,7 @@ const Login = () => {
     });
 
     const onSubmit = useCallback(({ email, password }, event) => {
-        authService.login(email, password).then((result) => {
+        login(email, password).then((result) => {
             if (result?.token) {
                 setToken(result.token);
                 const user = jwt_decode(result.token);
@@ -37,7 +37,7 @@ const Login = () => {
                 history.push('/');
             }
         })
-    }, []);
+    }, [setToken, setUser, history]);
 
     return (
         <div className="col-xs-12 col-sm-6 offset-sm-3 col-lg-4 offset-lg-4 mt-5">
@@ -49,7 +49,7 @@ const Login = () => {
                     <div className="mt-5">
                         <Form.Group>
                             <Form.Label>Email</Form.Label>
-                            <Form.Control ref={register} name="email" type="text" className={(errors.email  ? ' is-invalid' : '')} />
+                            <Form.Control ref={register} name="email" type="email" className={(errors.email  ? ' is-invalid' : '')} />
                             <Error error={errors.email} />
                         </Form.Group>
                         <Form.Group>
