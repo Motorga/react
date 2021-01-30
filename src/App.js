@@ -41,9 +41,9 @@ const App = () => {
                         <PublicRoute path="/register">
                             <Register />
                         </PublicRoute>
-                        <PublicRoute exact path="/forgot-password">
+                        {/* <PublicRoute exact path="/forgot-password">
                             <ForgotPassword />
-                        </PublicRoute>
+                        </PublicRoute> */}
                         <PrivateRoute exact path="/members">
                             <Members />
                         </PrivateRoute>
