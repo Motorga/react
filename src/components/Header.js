@@ -12,7 +12,7 @@ const Header = () => {
 
     const logout = useCallback(() => {
         setToken('');
-        setUser({});
+        setUser('{}');
         history.push('/login');
     }, [setToken, setUser, history]);
 
