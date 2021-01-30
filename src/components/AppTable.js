@@ -9,7 +9,7 @@ const AppTable = ({
     handleMinusClick = () => {},
     handleResetClick = () => {},
 }) => (
-    <Table striped bordered hover>
+    <Table striped bordered hover responsive>
         <thead className="text-center">
             <tr>
                 { cols.map((col, index) => (
