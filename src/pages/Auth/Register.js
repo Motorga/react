@@ -1,19 +1,28 @@
 import React, { useCallback, useContext } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import jwt_decode from 'jwt-decode';
 
-import Error from '../../components/Error';
 import { registerMember } from '../../services/authService';
 import { toastNotification } from '../../helpers/Toastify';
 import UserContext from '../../contexts/UserContext';
 import TokenContext from '../../contexts/TokenContext';
 import { jsonStringify } from '../../helpers/helper';
+import AppInput from '../../components/AppInput';
+import AppSelect from '../../components/AppSelect';
 
-const promotions = ['1I', '1A', '2I', '2A', '3A', '4A', '5A'];
+const promotions = [
+    {value: '1I', label: '1I'},
+    {value: '1A', label: '1A'},
+    {value: '2I', label: '2I'},
+    {value: '2A', label: '2A'},
+    {value: '3A', label: '3A'},
+    {value: '4A', label: '4A'},
+    {value: '5A', label: '5A'},
+];
 
 const Register = () => {
     const history = useHistory();
@@ -28,11 +37,12 @@ const Register = () => {
         history.push('/login');
     }
 
+    const promotionsValues = promotions.map(promotion => promotion.value);
     const validationSchema = Yup.object().shape({
         lastname: Yup.string().required('Le nom est obligatoire'),
         firstname: Yup.string().required('Le prénom est obligatoire'),
         password: Yup.string().required('Le mot de passe est obligatoire'),
-        promotion: Yup.string().oneOf(promotions, 'La promotion n\'est pas valide').required('Promotion obligatoire')
+        promotion: Yup.string().oneOf(promotionsValues, 'La promotion n\'est pas valide').required('Promotion obligatoire')
     });
 
     const { register, handleSubmit, errors } = useForm({
@@ -59,31 +69,10 @@ const Register = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div id="login-card" className="card border-0">
                     <div className="mt-5">
-                        <Form.Group>
-                            <Form.Label>Mot de passe <span className="text-danger">*</span></Form.Label>
-                            <Form.Control ref={register} name="password" type="password" className={(errors.password ? ' is-invalid' : '')} />
-                            <Error error={errors.password} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Nom <span className="text-danger">*</span></Form.Label>
-                            <Form.Control ref={register} name="lastname" type="text" className={(errors.lastname ? ' is-invalid' : '')} />
-                            <Error error={errors.lastname} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Prénom <span className="text-danger">*</span></Form.Label>
-                            <Form.Control ref={register} name="firstname" type="text" className={(errors.firstname ? ' is-invalid' : '')} />
-                            <Error error={errors.firstname} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Promotion <span className="text-danger">*</span></Form.Label>
-                            <Form.Control ref={register} name="promotion" as="select" custom className={(errors.promotion  ? ' is-invalid' : '')}>
-                                <option>Choisir votre promotion</option>
-                                {promotions.map(promotion => (
-                                    <option key={promotion}>{promotion}</option>
-                                ))}
-                            </Form.Control>
-                            <Error error={errors.promotion} />
-                        </Form.Group>
+                        <AppInput label="Mot de passe" name="password" type="password" required register={register} errors={errors} />
+                        <AppInput label="Nom" name="lastname" required register={register} errors={errors} />
+                        <AppInput label="Prénom" name="firstname" required register={register} errors={errors} />
+                        <AppSelect label="Promotion" name="promotion" optionLabel="Choisir votre promotion" options={promotions} required register={register} errors={errors} />
                         <div className="text-center">
                             <Button variant="primary" type="submit">
                                 Créer mon compte

@@ -1,16 +1,16 @@
 import React, { useCallback, useContext } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import jwt_decode from 'jwt-decode';
 
-import Error from '../../components/Error';
 import { login } from '../../services/authService';
 import UserContext from '../../contexts/UserContext';
 import TokenContext from '../../contexts/TokenContext';
 import { jsonStringify } from '../../helpers/helper';
+import AppInput from '../../components/AppInput';
 
 const Login = () => {
     const { setUser } = useContext(UserContext);
@@ -47,16 +47,8 @@ const Login = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div id="login-card" className="card border-0">
                     <div className="mt-5">
-                        <Form.Group>
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control ref={register} name="email" type="email" className={(errors.email  ? ' is-invalid' : '')} />
-                            <Error error={errors.email} />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Mot de passe</Form.Label>
-                            <Form.Control ref={register} name="password" type="password" className={(errors.password ? ' is-invalid' : '')} />
-                            <Error error={errors.password} />
-                        </Form.Group>
+                        <AppInput label="Email" name="email" type="email" required register={register} errors={errors} />
+                        <AppInput label="Mot de passe" name="password" type="password" required register={register} errors={errors} />
                         <div className="text-center">
                             <Button variant="primary" type="submit">
                                 Connexion
