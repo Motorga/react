@@ -59,18 +59,19 @@ export const resetAllOpen = () => {
     .catch(error => toastNotification('error', error.message));
 }
 
-export const inviteMember = email => {
+export const inviteMember = (email, role) => {
     return apolloClient.mutate({
         mutation: gql`
-            mutation($email: String!) {
-                inviteMember(email: $email) {
+            mutation($email: String!, $role: String!) {
+                inviteMember(email: $email, role: $role) {
                     id
                     email
                 }
             }
         `,
         variables: {
-            email
+            email,
+            role
         }
     })
     .then(result => result.data.inviteMember)

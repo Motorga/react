@@ -39,7 +39,7 @@ const Members = () => {
         }
         
         getUsers(status).then(users => {
-            const usersWithName = users.map(user => {
+            const usersWithName = users?.map(user => {
                 return {...user, name: `${user.lastname} ${user.firstname}`};
             })
             setUsers(usersWithName);
@@ -70,8 +70,8 @@ const Members = () => {
         }
     }, [fetchUsers]);
 
-    const handleInviteClick = useCallback(async email => {
-        const result = await inviteMember(email);
+    const handleInviteClick = useCallback(async (email, role) => {
+        const result = await inviteMember(email, role);
 
         if (result) {
             toastNotification('success', 'Le membre a bien été invité');

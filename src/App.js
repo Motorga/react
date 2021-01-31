@@ -14,7 +14,6 @@ import Register from './pages/Auth/Register';
 import Members from './pages/Members';
 import Profile from './pages/Profile';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ForgotPassword from './pages/Auth/ForgotPassword';
 
 import './assets/index.css';
 
@@ -41,9 +40,6 @@ const App = () => {
                         <PublicRoute path="/register">
                             <Register />
                         </PublicRoute>
-                        {/* <PublicRoute exact path="/forgot-password">
-                            <ForgotPassword />
-                        </PublicRoute> */}
                         <PrivateRoute exact path="/members">
                             <Members />
                         </PrivateRoute>
