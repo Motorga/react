@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import AppTableActions from './AppTableActions';
+import Actions from './Actions';
+import Open from './Open';
 
 const AppTable = ({
     cols,
@@ -8,6 +9,7 @@ const AppTable = ({
     handleAddClick = () => {},
     handleMinusClick = () => {},
     handleResetClick = () => {},
+    handleDeleteClick = () => {},
 }) => (
     <Table striped bordered hover responsive>
         <thead className="text-center">
@@ -24,13 +26,26 @@ const AppTable = ({
                         if (col.key === 'actions') {
                             return (
                                 <td key={index}>
-                                    <AppTableActions
+                                    <Actions
+                                        id={value.id}
+                                        status={value.status}
+                                        token={value.token}
+                                        handleResetClick={handleResetClick}
+                                        handleDeleteClick={handleDeleteClick}
+                                    />
+                                </td>
+                            )
+                        }
+
+                        if (col.key === 'open') {
+                            return (
+                                <td key={index}>
+                                    <Open
                                         id={value.id}
                                         open={value.open}
                                         status={value.status}
                                         handleAddClick={handleAddClick}
                                         handleMinusClick={handleMinusClick}
-                                        handleResetClick={handleResetClick}
                                     />
                                 </td>
                             )

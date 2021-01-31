@@ -2,12 +2,12 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ArrowCounterclockwise } from 'react-bootstrap-icons';
 import AppBottomTooltip from '../components/AppBottomTooltip';
-import AppTable from '../components/AppTable';
+import AppTable from '../components/AppTable/index';
 import InviteUser from '../components/InviteUser';
 import UserContext from '../contexts/UserContext';
 import { jsonParse } from '../helpers/helper';
 import { toastNotification } from '../helpers/Toastify';
-import { getUsers, updateOpenToUser, resetAllOpen, inviteMember } from '../services/userService';
+import { getUsers, updateOpenToUser, resetAllOpen, inviteMember, deleteMember } from '../services/userService';
 
 const Members = () => {
     const { user } = useContext(UserContext);
@@ -58,7 +58,7 @@ const Members = () => {
         updateOpenToUser(id, open - 1).then(() => fetchUsers());
     }, [fetchUsers]);
 
-    const handleResetClick = useCallback((id) => {
+    const handleResetClick = useCallback(id => {
         updateOpenToUser(id, 0).then(() => fetchUsers());
     }, [fetchUsers]);
 
@@ -78,6 +78,14 @@ const Members = () => {
             fetchUsers();
         }
     }, [fetchUsers]);
+
+    const handleDeleteClick = useCallback(async id => {
+        if (window.confirm('Es tu sûr de vouloir supprimer ce membre?')) {
+            deleteMember(id).then(() => {
+                fetchUsers()
+            });
+        }
+    }, [fetchUsers])
 
     return (
         <div className="container">
@@ -100,6 +108,7 @@ const Members = () => {
                 handleAddClick={handleAddClick}
                 handleMinusClick={handleMinusClick}
                 handleResetClick={handleResetClick}
+                handleDeleteClick={handleDeleteClick}
             />
         </div>
     )

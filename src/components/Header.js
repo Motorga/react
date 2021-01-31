@@ -1,5 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
+import { BoxArrowRight, People, Person } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router-dom';
 import TokenContext from '../contexts/TokenContext';
 import UserContext from '../contexts/UserContext';
@@ -22,9 +23,15 @@ const Header = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse className="justify-content-end">
                 <Nav>
-                    <Nav.Link onClick={() => history.push('/members')}>Membres</Nav.Link>
-                    <Nav.Link onClick={() => history.push('/profil')}>Profil</Nav.Link>
-                    <Nav.Link onClick={logout} className="text-danger">Déconnexion</Nav.Link>
+                    <Nav.Link className="d-flex align-items-center" onClick={() => history.push('/members')}>
+                        <People size={24} className="mr-1" />Membres
+                    </Nav.Link>
+                    <Nav.Link className="d-flex align-items-center" onClick={() => history.push('/profil')}>
+                        <Person size={24} className="mr-1" />Profil
+                    </Nav.Link>
+                    <Nav.Link className="d-flex align-items-center text-danger" onClick={logout}>
+                        <BoxArrowRight size={24} className="mr-1" />Déconnexion
+                    </Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

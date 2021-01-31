@@ -13,6 +13,7 @@ export const getUsers = (status) => {
                     bike,
                     open,
                     promotion,
+                    token,
                     status
                 }
             }
@@ -75,5 +76,22 @@ export const inviteMember = (email, role) => {
         }
     })
     .then(result => result.data.inviteMember)
+    .catch(error => toastNotification('error', error.message));
+}
+
+export const deleteMember = id => {
+    return apolloClient.mutate({
+        mutation: gql`
+            mutation($id: ID!) {
+                deleteUser(where: { id: $id }) {
+                    id
+                }
+            }
+        `,
+        variables: {
+            id
+        }
+    })
+    .then(() => toastNotification('success', 'Membre supprimé'))
     .catch(error => toastNotification('error', error.message));
 }
