@@ -8,6 +8,7 @@ export const getUsers = (status) => {
             query ($status: [Status!]) {
                 users (where: { status_in: $status}) {
                     id,
+                    email,
                     lastname,
                     firstname,
                     bike,
