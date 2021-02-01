@@ -40,7 +40,7 @@ const Members = () => {
         
         getUsers(status).then(users => {
             const usersWithName = users?.map(user => {
-                return {...user, name: `${user.lastname} ${user.firstname}`};
+                return {...user, name: user.status === 'PENDING' ? user.email : `${user.lastname} ${user.firstname}`};
             })
             setUsers(usersWithName);
         })
