@@ -43,7 +43,7 @@ const App = () => {
                         <PrivateRoute exact path="/members">
                             <Members />
                         </PrivateRoute>
-                        <PrivateRoute exact path="/profil">
+                        <PrivateRoute exact path="/profile">
                             <Profile />
                         </PrivateRoute>
                         <Route path="*">
