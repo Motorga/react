@@ -31,6 +31,12 @@ const Members = () => {
 
     const cols = [...commonCols, ...additionalCols];
 
+    const withNameUsers = users => {
+        return users?.map(user => {
+            return {...user, name: user.status === 'PENDING' ? user.email : `${user.lastname} ${user.firstname}`};
+        })
+    }
+
     const fetchUsers = useCallback(() => {
         let status = ['ENABLED'];
         
@@ -39,10 +45,7 @@ const Members = () => {
         }
         
         getUsers(status).then(users => {
-            const usersWithName = users?.map(user => {
-                return {...user, name: user.status === 'PENDING' ? user.email : `${user.lastname} ${user.firstname}`};
-            })
-            setUsers(usersWithName);
+            setUsers(withNameUsers(users));
         })
     }, [role])
 
@@ -71,21 +74,23 @@ const Members = () => {
     }, [fetchUsers]);
 
     const handleInviteClick = useCallback(async (email, role) => {
-        const result = await inviteMember(email, role);
-
-        if (result) {
+        const users = await inviteMember(email, role);
+        
+        if (users) {
             toastNotification('success', 'Le membre a bien été invité');
-            fetchUsers();
+            setUsers(withNameUsers(users));
         }
-    }, [fetchUsers]);
+    }, []);
 
     const handleDeleteClick = useCallback(async id => {
         if (window.confirm('Es tu sûr de vouloir supprimer ce membre?')) {
-            deleteMember(id).then(() => {
-                fetchUsers()
-            });
+            const users = await deleteMember(id);
+            if (users) {
+                toastNotification('success', 'Le membre a bien été supprimé');
+                setUsers(withNameUsers(users));
+            }
         }
-    }, [fetchUsers])
+    }, [])
 
     return (
         <div className="container">

@@ -7,14 +7,14 @@ export const getUsers = (status) => {
         query: gql`
             query ($status: [Status!]) {
                 users (where: { status_in: $status}) {
-                    id,
-                    email,
-                    lastname,
-                    firstname,
-                    bike,
-                    open,
-                    promotion,
-                    token,
+                    id
+                    email
+                    lastname
+                    firstname
+                    bike
+                    open
+                    promotion
+                    token
                     status
                 }
             }
@@ -68,6 +68,13 @@ export const inviteMember = (email, role) => {
                 inviteMember(email: $email, role: $role) {
                     id
                     email
+                    lastname
+                    firstname
+                    bike
+                    open
+                    promotion
+                    token
+                    status
                 }
             }
         `,
@@ -84,8 +91,16 @@ export const deleteMember = id => {
     return apolloClient.mutate({
         mutation: gql`
             mutation($id: ID!) {
-                deleteUser(where: { id: $id }) {
+                deleteMember(id: $id) {
                     id
+                    email
+                    lastname
+                    firstname
+                    bike
+                    open
+                    promotion
+                    token
+                    status
                 }
             }
         `,
@@ -93,6 +108,6 @@ export const deleteMember = id => {
             id
         }
     })
-    .then(() => toastNotification('success', 'Membre supprimé'))
+    .then(result => result.data.deleteMember)
     .catch(error => toastNotification('error', error.message));
 }
