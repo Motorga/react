@@ -34,7 +34,7 @@ const Login = () => {
                 setToken(result.token);
                 const user = jwt_decode(result.token);
                 setUser(jsonStringify(user));
-                history.push('/');
+                history.push('/members');
             }
         })
     }, [setToken, setUser, history]);
