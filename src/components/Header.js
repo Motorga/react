@@ -26,7 +26,7 @@ const Header = () => {
                     <Nav.Link className="d-flex align-items-center" onClick={() => history.push('/members')}>
                         <People size={24} className="mr-1" />Membres
                     </Nav.Link>
-                    <Nav.Link className="d-flex align-items-center" onClick={() => history.push('/profil')}>
+                    <Nav.Link className="d-flex align-items-center" onClick={() => history.push('/profile')}>
                         <Person size={24} className="mr-1" />Profil
                     </Nav.Link>
                     <Nav.Link className="d-flex align-items-center text-danger" onClick={logout}>
