@@ -24,7 +24,7 @@ export const getUsers = (status) => {
         }
     })
     .then(result => result.data.users)
-    .catch(error => toastNotification('error', error.message));
+    .catch(() => toastNotification('error', 'Une erreur s\'est produite, veuillez réessayer plus tard'));
 }
 
 export const updateOpenToUser = (id, open) => {
@@ -85,6 +85,40 @@ export const inviteMember = (email, role) => {
     })
     .then(result => result.data.inviteMember)
     .catch(error => toastNotification('error', error.message));
+}
+
+export const editMember = (id, email, lastname, firstname, promotion, bike) => {
+    return apolloClient.mutate({
+        mutation: gql`
+            mutation($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
+                updateUser(data: $data, where: $where) {
+                    id
+                    email
+                    lastname
+                    firstname
+                    promotion
+                    bike
+                    open
+                    role
+                    status
+                }
+            }
+        `,
+        variables: {
+            data: {
+                email,
+                lastname,
+                firstname,
+                promotion,
+                bike
+            },
+            where: {
+                id
+            }
+        }
+    })
+    .then(result => result.data.updateUser)
+    .catch(() => toastNotification('error', "Une erreur est survenue, veuillez réessayer plus tard"));
 }
 
 export const deleteMember = id => {

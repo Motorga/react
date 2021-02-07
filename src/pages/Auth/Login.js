@@ -55,7 +55,7 @@ const Login = () => {
                             </Button>
                         </div>
                         <div className="mt-3 text-center">
-                            <Link to="forgot-password" className="btn-link pr-0">Mot de passe oublié</Link>
+                            <Link to="forgotPassword" className="btn-link pr-0">Mot de passe oublié</Link>
                             <br/>
                             <small>Vous n'avez pas encore de compte?<br/>Demandez à un admin de l'association de vous en créer un!</small>
                         </div>

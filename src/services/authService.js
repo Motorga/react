@@ -17,7 +17,7 @@ export const login = (email, password) => {
         }
     })
     .then(response => response.data.login)
-    .catch(() => toastNotification('error', 'Une erreur s\'est produite lors de la connexion'));
+    .catch(error => toastNotification('error', error.message));
 }
 export const registerMember = (token, password, lastname, firstname, promotion) => {
     return apolloClient.mutate({
@@ -38,4 +38,56 @@ export const registerMember = (token, password, lastname, firstname, promotion) 
     })
     .then(response => response.data.signup)
     .catch(error => toastNotification('error', error.message));
+}
+
+export const forgotPassword = email => {
+    return apolloClient.mutate({
+        mutation: gql`
+            mutation($email: String!) {
+                forgotPassword(email: $email) {
+                    token
+                }
+            }
+        `,
+        variables: {
+            email
+        }
+    })
+    .then(response => response.data.forgotPassword)
+    .catch(error => toastNotification('error', error.message))
+}
+
+export const resetPassword = (token, password) => {
+    return apolloClient.mutate({
+        mutation: gql`
+            mutation($token: String!, $password: String!) {
+                resetPassword(token: $token, password: $password) {
+                    email
+                }
+            }
+        `,
+        variables: {
+            token,
+            password
+        }
+    })
+    .then(response => response.data.resetPassword)
+    .catch(error => toastNotification('error', error.message))
+}
+
+export const changePassword = email => {
+    return apolloClient.mutate({
+        mutation: gql`
+            mutation($email: String!, oldPassword: String!, changePassword: String!) {
+                changePassword(email: $email, oldPassword: $oldPassword, changePassword: $changePassword) {
+                    token
+                }
+            }
+        `,
+        variables: {
+            email
+        }
+    })
+    .then(response => response.data.changePassword)
+    .catch(error => toastNotification('error', error.message))
 }

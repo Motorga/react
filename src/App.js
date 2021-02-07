@@ -11,10 +11,12 @@ import UserContext from './contexts/UserContext';
 import TokenContext from './contexts/TokenContext';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import ForgotPassword from './pages/Auth/ForgotPassword';
+import ResetPassword from './pages/Auth/ResetPassword';
 import Members from './pages/Members';
 import Profile from './pages/Profile';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/index.css';
 
 const App = () => {
@@ -39,6 +41,12 @@ const App = () => {
                         </PublicRoute>
                         <PublicRoute path="/register">
                             <Register />
+                        </PublicRoute>
+                        <PublicRoute path="/forgotPassword">
+                            <ForgotPassword />
+                        </PublicRoute>
+                        <PublicRoute path="/resetPassword">
+                            <ResetPassword />
                         </PublicRoute>
                         <PrivateRoute exact path="/members">
                             <Members />

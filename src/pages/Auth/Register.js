@@ -33,7 +33,7 @@ const Register = () => {
     const urlToken = query.get('token');
 
     if (!urlToken) {
-        toastNotification('error', 'Le token dans le lien est incorrecte.');
+        toastNotification('error', 'Le token présent dans le lien est incorrecte.');
         history.push('/login');
     }
 
@@ -42,7 +42,7 @@ const Register = () => {
         lastname: Yup.string().required('Le nom est obligatoire'),
         firstname: Yup.string().required('Le prénom est obligatoire'),
         password: Yup.string().required('Le mot de passe est obligatoire'),
-        promotion: Yup.string().oneOf(promotionsValues, 'La promotion n\'est pas valide').required('Promotion obligatoire')
+        promotion: Yup.string().oneOf(promotionsValues, 'La promotion n\'est pas valide').required('La promotion est obligatoire')
     });
 
     const { register, handleSubmit, errors } = useForm({
