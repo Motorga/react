@@ -6,10 +6,10 @@ export const isLoggedIn = (token) => {
     }
 
     const { exp } = jwt_decode(token);
-    const now = new Date();
-    now.setDate(now.getDate() + 1);
+    let now = new Date();
+    now = Math.round(now.getTime() / 1000)
 
-    return (exp*1000) < now.getTime();
+    return exp > now;
 }
 
 export const jsonParse = (payload) => {
