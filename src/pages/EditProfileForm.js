@@ -47,7 +47,7 @@ const EditProfileForm = ({ user, setEditProfile }) => {
                 toastNotification('success', 'Profil mis à jour');
             }
         });
-    }, [id]);
+    }, [id, setUser, setEditProfile]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
