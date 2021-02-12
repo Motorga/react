@@ -51,7 +51,7 @@ const Members = () => {
 
     useEffect(() => {
         fetchUsers();
-    });
+    }, []);
 
     const handleAddClick = useCallback((id, open) => {
         updateOpenToUser(id, open + 1).then(() => fetchUsers());
