@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { Plus } from 'react-bootstrap-icons';
 
-const InviteUser = ({ handleInviteClick }) => {
+const InviteUser = ({ handleInviteMember }) => {
     const [ email, setEmail ] = useState('');
     const [ role, setRole ] = useState('USER')
 
@@ -12,7 +12,7 @@ const InviteUser = ({ handleInviteClick }) => {
                 <Form.Control name="email" type="email" placeholder="Email du membre à inviter" onInput={event => setEmail(event.currentTarget.value)} />
                 <InputGroup.Append>
                     <Button onClick={() => {
-                        handleInviteClick(email, role);
+                        handleInviteMember(email, role);
                         setEmail('');
                     }}>
                         <Plus size={24}/>Inviter

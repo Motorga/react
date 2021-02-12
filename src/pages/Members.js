@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ArrowCounterclockwise } from 'react-bootstrap-icons';
+import { useHistory } from 'react-router-dom';
 import AppBottomTooltip from '../components/AppBottomTooltip';
 import AppTable from '../components/AppTable/index';
 import InviteUser from '../components/InviteUser';
@@ -10,6 +11,7 @@ import { toastNotification } from '../helpers/Toastify';
 import { getUsers, updateOpenToUser, resetAllOpen, inviteMember, deleteMember } from '../services/userService';
 
 const Members = () => {
+    const history = useHistory();
     const { user } = useContext(UserContext);
     const { role } = jsonParse(user);
 
@@ -51,29 +53,9 @@ const Members = () => {
 
     useEffect(() => {
         fetchUsers();
-    });
+    }, []);
 
-    const handleAddClick = useCallback((id, open) => {
-        updateOpenToUser(id, open + 1).then(() => fetchUsers());
-    }, [fetchUsers]);
-
-    const handleMinusClick = useCallback((id, open) => {
-        updateOpenToUser(id, open - 1).then(() => fetchUsers());
-    }, [fetchUsers]);
-
-    const handleResetClick = useCallback(id => {
-        updateOpenToUser(id, 0).then(() => fetchUsers());
-    }, [fetchUsers]);
-
-    const handleResetAllClick = useCallback(() => {
-        if (window.confirm('Es tu sûr de vouloir remettre à 0 les points OPEN de tous les membres?')) {
-            resetAllOpen().then(() => {
-                fetchUsers()
-            });
-        }
-    }, [fetchUsers]);
-
-    const handleInviteClick = useCallback(async (email, role) => {
+    const handleInviteMember = useCallback(async (email, role) => {
         const users = await inviteMember(email, role);
         
         if (users) {
@@ -82,38 +64,67 @@ const Members = () => {
         }
     }, []);
 
-    const handleDeleteClick = useCallback(async id => {
+    const resetOpenMembers = useCallback(async () => {
+        if (window.confirm('Es tu sûr de vouloir remettre à 0 les points OPEN de tous les membres?')) {
+            await resetAllOpen();
+            history.go(0);
+        }
+    }, [fetchUsers]);
+
+    const handleAdd = useCallback(async (id, open) => {
+        await updateOpenToUser(id, open + 1);
+        history.go(0);
+    }, [fetchUsers]);
+
+    const handleMinus = useCallback(async (id, open) => {
+        await updateOpenToUser(id, open - 1);
+        history.go(0);
+    }, [fetchUsers]);
+
+    const resetOpenMember = useCallback(async id => {
+        await updateOpenToUser(id, 0);
+        history.go(0);
+    }, [fetchUsers]);
+
+    const handleDeleteMember = useCallback(async id => {
         if (window.confirm('Es tu sûr de vouloir supprimer ce membre?')) {
-            const users = await deleteMember(id);
-            if (users) {
+            const result = await deleteMember(id);
+            if (result) {
                 toastNotification('success', 'Le membre a bien été supprimé');
-                setUsers(withNameUsers(users));
+                history.go(0);
             }
         }
-    }, [])
+    }, [role])
+
+    const actions = {
+        labels: ['copyToken', 'reset', 'delete'],
+        callback: {
+            reset: id => resetOpenMember(id),
+            delete: id => handleDeleteMember(id)
+        }
+    }
 
     return (
         <div className="container">
-            <div className="text-center mb-3">
+            <div className="text-center mb-5">
                 <h1>Liste des membres</h1>
             </div>
             { role === 'ADMIN' && (
-                <div className="row justify-content-between align-items-center mb-3">
+                <div className="d-flex justify-content-between align-items-center mb-3">
                     <div className="col-5">
-                        <InviteUser handleInviteClick={handleInviteClick} />
+                        <InviteUser handleInviteMember={handleInviteMember} />
                     </div>
                     <AppBottomTooltip tooltipText="Reset tous les points de tous les membres">
-                        <Button onClick={handleResetAllClick} variant="dark"> <ArrowCounterclockwise size={24} />&nbsp;Reset all</Button>
+                        <Button onClick={resetOpenMembers} variant="dark"> <ArrowCounterclockwise size={24} />&nbsp;Reset all</Button>
                     </AppBottomTooltip>
                 </div>
             )}
             <AppTable
                 cols={cols}
                 values={users}
-                handleAddClick={handleAddClick}
-                handleMinusClick={handleMinusClick}
-                handleResetClick={handleResetClick}
-                handleDeleteClick={handleDeleteClick}
+                actions={actions}
+                handleAddClick={handleAdd}
+                handleMinusClick={handleMinus}
             />
         </div>
     )

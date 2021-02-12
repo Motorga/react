@@ -3,12 +3,12 @@ import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AppInput from '../components/AppInput';
-import AppSelect from '../components/AppSelect';
-import { editMember } from '../services/userService';
-import { toastNotification } from '../helpers/Toastify';
-import UserContext from '../contexts/UserContext';
-import { jsonStringify } from '../helpers/helper';
+import AppInput from '../../components/AppInput';
+import AppSelect from '../../components/AppSelect';
+import UserContext from '../../contexts/UserContext';
+import { jsonStringify } from '../../helpers/helper';
+import { toastNotification } from '../../helpers/Toastify';
+import { editMember } from '../../services/userService';
 
 const promotions = [
     {value: '1I', label: '1I'},

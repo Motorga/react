@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import UserContext from '../contexts/UserContext';
-import { jsonParse } from '../helpers/helper';
+import UserContext from '../../contexts/UserContext';
+import { jsonParse } from '../../helpers/helper';
 import ChangePasswordForm from './ChangePasswordForm';
 import EditProfileForm from './EditProfileForm';
 
@@ -14,7 +14,7 @@ const Profile = () => {
 
     return (
         <div className="container">
-            <div className="text-center mb-3">
+            <div className="text-center mb-5">
                 <h1>Votre profil</h1>
             </div>
             {editProfile ? (

@@ -6,10 +6,9 @@ import Open from './Open';
 const AppTable = ({
     cols,
     values,
+    actions,
     handleAddClick = () => {},
     handleMinusClick = () => {},
-    handleResetClick = () => {},
-    handleDeleteClick = () => {},
 }) => (
     <Table striped bordered hover responsive>
         <thead className="text-center">
@@ -27,11 +26,8 @@ const AppTable = ({
                             return (
                                 <td key={index}>
                                     <Actions
-                                        id={value.id}
-                                        status={value.status}
-                                        token={value.token}
-                                        handleResetClick={handleResetClick}
-                                        handleDeleteClick={handleDeleteClick}
+                                        actions={actions}
+                                        value={value}
                                     />
                                 </td>
                             )
@@ -41,9 +37,7 @@ const AppTable = ({
                             return (
                                 <td key={index}>
                                     <Open
-                                        id={value.id}
-                                        open={value.open}
-                                        status={value.status}
+                                        value={value}
                                         handleAddClick={handleAddClick}
                                         handleMinusClick={handleMinusClick}
                                     />
