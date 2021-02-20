@@ -18,7 +18,7 @@ const Header = () => {
     }, [setToken, setUser, history]);
 
     return (
-        <Navbar collapseOnSelect expand="md" bg="light" variant="light" sticky="top">
+        <Navbar className="shadow mb-2" collapseOnSelect expand="md" bg="light" variant="light" sticky="top">
             <Navbar.Brand>Motorga</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse className="justify-content-end">
