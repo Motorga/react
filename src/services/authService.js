@@ -75,17 +75,19 @@ export const resetPassword = (token, password) => {
     .catch(error => toastNotification('error', error.message))
 }
 
-export const changePassword = email => {
+export const changePassword = (email, oldPassword, password) => {
     return apolloClient.mutate({
         mutation: gql`
-            mutation($email: String!, oldPassword: String!, changePassword: String!) {
-                changePassword(email: $email, oldPassword: $oldPassword, changePassword: $changePassword) {
+            mutation($email: String!, $oldPassword: String!, $password: String!) {
+                changePassword(email: $email, oldPassword: $oldPassword, password: $password) {
                     token
                 }
             }
         `,
         variables: {
-            email
+            email,
+            oldPassword,
+            password
         }
     })
     .then(response => response.data.changePassword)

@@ -1,11 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AppInput from '../../components/AppInput';
+import { jsonParse } from '../../helpers/helper';
+import UserContext from '../../contexts/UserContext';
+import { changePassword } from '../../services/authService';
+import { toastNotification } from '../../helpers/Toastify';
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({ setChangePassword }) => {
     const validationSchema = Yup.object().shape({
         oldPassword: Yup.string().required('Le mot de passe est obligatoire'),
         password: Yup.string().required('Le mot de passe est obligatoire')
@@ -16,8 +20,15 @@ const ChangePasswordForm = () => {
         resolver: yupResolver(validationSchema)
     });
 
-    const onSubmit = useCallback(({ password }) => {
+    const { user } = useContext(UserContext);
+    const { email } = jsonParse(user);
 
+    const onSubmit = useCallback(async ({ oldPassword, password }) => {
+        const result = await changePassword(email, oldPassword, password);
+        if (result) {
+            toastNotification('success', 'Votre mot de passe a été modifié');
+            setChangePassword(false);
+        }
     }, []);
 
     return (

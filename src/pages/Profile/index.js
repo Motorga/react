@@ -42,7 +42,7 @@ const Profile = () => {
                 </Button>
             </div>
             {changePassword && (
-                <ChangePasswordForm />
+                <ChangePasswordForm setChangePassword={setChangePassword} />
             )}
         </div>
     )
