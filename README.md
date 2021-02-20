@@ -15,5 +15,4 @@ npm start
 ## Start in prod
 ```console
 npm run build
-serve -s build
 ```
