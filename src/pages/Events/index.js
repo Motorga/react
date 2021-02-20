@@ -14,6 +14,7 @@ const Events = () => {
     const cols = [
         { label: 'Nom', key: 'name' },
         { label: 'Date', key: 'date' },
+        { label: 'Organisateur', key: 'ownerName' },
         { label: 'Participants', key: 'countParticipants' },
         { label: 'Actions', key: 'actions' },
     ];
@@ -33,6 +34,7 @@ const Events = () => {
         const mappedEvents = events.map(event => ({
             ...event,
             date: format(new Date(event.date), 'dd/MM/yyyy HH:mm'),
+            ownerName: `${event.owner.firstname} ${event.owner.lastname}`,
             countParticipants: event.participants?.length || 0
         }))
 
