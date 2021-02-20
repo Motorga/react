@@ -21,7 +21,7 @@ const Header = () => {
     return (
         <Navbar className="shadow mb-2" collapseOnSelect expand="md" bg="light" variant="light" sticky="top">
             <Navbar.Brand>
-                <img className="mr-2" src={`${process.env.PUBLIC_URL}/icon.svg`} width="40" height="40"></img>
+                <img className="mr-2" src={`${process.env.PUBLIC_URL}/icon.svg`} width="50" height="50"></img>
                 Motorga
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
