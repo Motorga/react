@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ArrowCounterclockwise } from 'react-bootstrap-icons';
-import { useHistory } from 'react-router-dom';
 import AppBottomTooltip from '../components/AppBottomTooltip';
 import AppTable from '../components/AppTable/index';
 import InviteUser from '../components/InviteUser';
@@ -11,7 +10,6 @@ import { toastNotification } from '../helpers/Toastify';
 import { getUsers, updateOpenToUser, resetAllOpen, inviteMember, deleteMember } from '../services/userService';
 
 const Members = () => {
-    const history = useHistory();
     const { user } = useContext(UserContext);
     const { role } = jsonParse(user);
 
