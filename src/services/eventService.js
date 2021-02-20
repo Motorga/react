@@ -98,10 +98,10 @@ export const addEvent = ({ name, description, date, userId}) => {
     .catch(() => toastNotification('error', 'Une erreur s\'est produite, veuillez réessayer plus tard'));
 }
 
-export const updateEvent = (id) => {
+export const updateEvent = ({ id, name, description, date}) => {
     return apolloClient.mutate({
         mutation: gql`
-            mutation ($where: EventWhereInput, $data: EventUpdateInput) {
+            mutation ($where: EventWhereUniqueInput!, $data: EventUpdateInput!) {
                 updateEvent(where: $where, data: $data) {
                     id
                     name
@@ -120,7 +120,9 @@ export const updateEvent = (id) => {
                 id
             },
             data: {
-                
+                name,
+                description,
+                date
             }
         }
     })

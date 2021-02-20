@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { Plus } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router-dom';
+import { format } from 'date-fns'
 
 import AppTable from '../../components/AppTable';
 import UserContext from '../../contexts/UserContext';
-import { formatDateTime, jsonParse } from '../../helpers/helper';
+import { jsonParse } from '../../helpers/helper';
 import { toastNotification } from '../../helpers/Toastify';
 import { getEvents, addParticipantToEvent, deleteEvent } from '../../services/eventService';
 
@@ -31,7 +32,7 @@ const Events = () => {
         const events = await getEvents()
         const mappedEvents = events.map(event => ({
             ...event,
-            date: formatDateTime(event.date),
+            date: format(new Date(event.date), 'dd/MM/yyyy HH:mm'),
             countParticipants: event.participants?.length || 0
         }))
 
@@ -64,6 +65,10 @@ const Events = () => {
         }
     };
 
+    const handleEditEvent = id => {
+        history.push(`/events/${id}/edit`);
+    }
+
     const handleDeleteEvent = async id => {
         if (window.confirm('Es tu sûr de vouloir supprimer cette sortie?')) {
             const result = await deleteEvent(id);
@@ -76,10 +81,11 @@ const Events = () => {
     };
 
     const actions = {
-        labels: ['info', 'participate', 'deleteEvent'],
+        labels: ['info', 'participate', 'edit', 'deleteEvent'],
         callback: {
             info: id => handleInfoEvent(id),
             participate: (id, connectOrDisconnect) => handleParticipateEvent(id, connectOrDisconnect),
+            edit: id => handleEditEvent(id),
             deleteEvent: id => handleDeleteEvent(id)
         }
     };

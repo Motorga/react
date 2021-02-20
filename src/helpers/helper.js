@@ -27,12 +27,3 @@ export const jsonStringify = (payload) => {
         return '';
     }
 }
-
-export const formatDateTime = (date) => {
-    const dateObject = new Date(date);
-
-    const hours = dateObject.getHours() < 10 ? `0${dateObject.getHours()}` : dateObject.getHours();
-    const minutes = dateObject.getMinutes() < 10 ? `0${dateObject.getMinutes()}` : dateObject.getMinutes();
-    const seconds = dateObject.getSeconds() < 10 ? `0${dateObject.getSeconds()}` : dateObject.getSeconds();
-    return `${dateObject.toLocaleDateString('fr-FR')} ${hours}:${minutes}:${seconds}`
-}

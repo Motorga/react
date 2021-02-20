@@ -18,6 +18,7 @@ import Members from './pages/Members';
 import Events from './pages/Events/index';
 import Event from './pages/Events/Event';
 import NewEvent from './pages/Events/NewEvent';
+import EditEvent from './pages/Events/EditEvent';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/index.css';
@@ -59,6 +60,9 @@ const App = () => {
                         </PrivateRoute>
                         <PrivateRoute exact path="/events/new">
                             <NewEvent />
+                        </PrivateRoute>
+                        <PrivateRoute path="/events/:id/edit">
+                            <EditEvent />
                         </PrivateRoute>
                         <PrivateRoute path="/events/:id">
                             <Event />

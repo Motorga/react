@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-import { format } from 'date-fns'
+import { useHistory, useParams } from 'react-router-dom';
 
+import { getEvent, updateEvent } from '../../services/eventService';
 import { toastNotification } from '../../helpers/Toastify';
-import { getEvent } from '../../services/eventService';
+import EventForm from './EventForm';
 
-const Event = () => {
+const EditEvent = () => {
     const history = useHistory();
     const { id } = useParams();
     const [event, setEvent] = useState();
@@ -20,6 +20,10 @@ const Event = () => {
         }
 
         setEvent(event)
+    };
+
+    const onSubmit = async data => {
+        updateEvent({...data, id: event.id})
     };
 
     useEffect(() => {
@@ -43,37 +47,20 @@ const Event = () => {
             </div>
         )
     }
-
+    
     return (
         <div className="container">
-            <Button className="mt-2" variant="secondary" onClick={() => history.push('/events')}>
-                Retour
-            </Button>
             <div className="text-center mb-5">
-                <h1>{event.name}</h1>
+                <h1>Modification de la sortie "{event.name}"</h1>
             </div>
-            <div className="row">
-                <div className="col-4 offset-2">
-                    <h4>Description:</h4>
-                    {event.description}
-                </div>
-                <div className="col-4 offset-2">
-                    <h4>Date:</h4>
-                    <p>{format(new Date(event.date), 'dd/MM/yyyy HH:mm')}</p>
-                    <h4>Organisateur:</h4>
-                    <p>
-                        {event.owner.firstname} {event.owner.lastname}
-                    </p>
-                    <h4>Participants:</h4>
-                    {event.participants?.map((participant, index) => (
-                        <p key={index}>
-                            {participant.firstname} {participant.lastname}
-                        </p>
-                    ))}
-                </div>
+            <div className="text-center">
+                <EventForm
+                    event={event}
+                    onSubmit={onSubmit}
+                />
             </div>
         </div>
     )
 }
 
-export default Event;
+export default EditEvent;

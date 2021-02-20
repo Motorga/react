@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ArrowCounterclockwise, Clipboard, InfoCircle, PersonDash, PersonPlus, Trash } from 'react-bootstrap-icons';
+import { ArrowCounterclockwise, Clipboard, InfoCircle, Pencil, PersonDash, PersonPlus, Trash } from 'react-bootstrap-icons';
 import UserContext from '../../contexts/UserContext';
 import { jsonParse } from '../../helpers/helper';
 import { toastNotification } from '../../helpers/Toastify';
@@ -66,6 +66,11 @@ const Actions = ({ actions = [], value = {}, handleDeleteClick }) => {
                             size={24}
                         />
                     )}
+                </AppBottomTooltip>
+            )}
+            {actions.labels.includes('edit') && (value.owner.id === userId || role === 'ADMIN') && (
+                <AppBottomTooltip tooltipText="Modifier">
+                    <Pencil className="cursor-pointer text-warning" onClick={() => actions.callback.edit(value.id)} size={24}/>
                 </AppBottomTooltip>
             )}
             {actions.labels.includes('deleteEvent') && (value.owner.id === userId || role === 'ADMIN') && (
