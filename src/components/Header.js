@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
-import { BoxArrowRight, People, Person } from 'react-bootstrap-icons';
+import { BoxArrowRight, CalendarEvent, People, Person } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router-dom';
 import TokenContext from '../contexts/TokenContext';
 import UserContext from '../contexts/UserContext';
@@ -25,6 +25,9 @@ const Header = () => {
                 <Nav>
                     <Nav.Link className="d-flex align-items-center" onClick={() => history.push('/members')}>
                         <People size={24} className="mr-1" />Membres
+                    </Nav.Link>
+                    <Nav.Link className="d-flex align-items-center" onClick={() => history.push('/events')}>
+                        <CalendarEvent size={24} className="mr-1" />Sorties
                     </Nav.Link>
                     <Nav.Link className="d-flex align-items-center" onClick={() => history.push('/profile')}>
                         <Person size={24} className="mr-1" />Profil

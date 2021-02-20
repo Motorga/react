@@ -52,7 +52,6 @@ export const resetAllOpen = () => {
             mutation {
                 resetAllOpen {
                     id
-                    open
                 }
             }
         `,
@@ -124,24 +123,18 @@ export const editMember = (id, email, lastname, firstname, promotion, bike) => {
 export const deleteMember = id => {
     return apolloClient.mutate({
         mutation: gql`
-            mutation($id: ID!) {
-                deleteMember(id: $id) {
+            mutation($where: UserWhereUniqueInput!) {
+                deleteUser(where: $where) {
                     id
-                    email
-                    lastname
-                    firstname
-                    bike
-                    open
-                    promotion
-                    token
-                    status
                 }
             }
         `,
         variables: {
-            id
+            where: {
+                id
+            }
         }
     })
-    .then(result => result.data.deleteMember)
+    .then(result => result.data.deleteUser)
     .catch(error => toastNotification('error', error.message));
 }

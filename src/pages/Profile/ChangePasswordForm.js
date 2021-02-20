@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AppInput from '../components/AppInput';
+import AppInput from '../../components/AppInput';
 
 const ChangePasswordForm = () => {
     const validationSchema = Yup.object().shape({

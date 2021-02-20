@@ -13,8 +13,11 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import ResetPassword from './pages/Auth/ResetPassword';
+import Profile from './pages/Profile/index';
 import Members from './pages/Members';
-import Profile from './pages/Profile';
+import Events from './pages/Events/index';
+import Event from './pages/Events/Event';
+import NewEvent from './pages/Events/NewEvent';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/index.css';
@@ -50,6 +53,15 @@ const App = () => {
                         </PublicRoute>
                         <PrivateRoute exact path="/members">
                             <Members />
+                        </PrivateRoute>
+                        <PrivateRoute exact path="/events">
+                            <Events />
+                        </PrivateRoute>
+                        <PrivateRoute exact path="/events/new">
+                            <NewEvent />
+                        </PrivateRoute>
+                        <PrivateRoute path="/events/:id">
+                            <Event />
                         </PrivateRoute>
                         <PrivateRoute exact path="/profile">
                             <Profile />
