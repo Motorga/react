@@ -1,0 +1,27 @@
+name: Production CD
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    production:
+        name: Deploy a new version of Motorga's react client
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Use a secure shell to deploy a new version of Motorga for the master branch
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.SSH_HOST }}
+                username: ${{ secrets.SSH_USER }}
+                port: ${{ secrets.SSH_PORT }}
+                key: ${{ secrets.SSH_KEY }}
+                script: |
+                  cd /home/debian/react &&
+                  git checkout . &&
+                  git checkout master &&
+                  git pull &&
+                  npm install &&
+                  npm run build
