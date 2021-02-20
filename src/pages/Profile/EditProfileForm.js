@@ -40,9 +40,9 @@ const EditProfileForm = ({ user, setEditProfile }) => {
 
     const onSubmit = useCallback(({ email, lastname, firstname, promotion, bike }) => {
         editMember(id, email, lastname, firstname, promotion, bike)
-        .then(result => {
-            if (result) {
-                setUser(jsonStringify(result));
+        .then(user => {
+            if (user) {
+                setUser(jsonStringify(user));
                 setEditProfile(false);
                 toastNotification('success', 'Profil mis à jour');
             }

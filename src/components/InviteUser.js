@@ -9,12 +9,14 @@ const InviteUser = ({ handleInviteMember }) => {
     return (
         <>
             <InputGroup className="align-items-center">
-                <Form.Control name="email" type="email" placeholder="Email du membre à inviter" onInput={event => setEmail(event.currentTarget.value)} />
+                <Form.Control name="email" type="email" placeholder="Email du membre à inviter" value={email} onInput={event => setEmail(event.currentTarget.value)} />
                 <InputGroup.Append>
-                    <Button onClick={() => {
-                        handleInviteMember(email, role);
-                        setEmail('');
-                    }}>
+                    <Button
+                        onClick={() => {
+                            handleInviteMember(email, role);
+                            setEmail('');
+                        }}
+                    >
                         <Plus size={24}/>Inviter
                     </Button>
                 </InputGroup.Append>

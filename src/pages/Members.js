@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { ArrowCounterclockwise } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router-dom';
@@ -39,7 +39,7 @@ const Members = () => {
         })
     }
 
-    const fetchUsers = useCallback(() => {
+    const fetchUsers = () => {
         let status = ['ENABLED'];
         
         if (role === 'ADMIN') {
@@ -49,52 +49,50 @@ const Members = () => {
         getUsers(status).then(users => {
             setUsers(withNameUsers(users));
         })
-    }, [role])
+    };
 
     useEffect(() => {
         fetchUsers();
     }, []);
 
-    const handleInviteMember = useCallback(async (email, role) => {
-        const users = await inviteMember(email, role);
-        
-        if (users) {
+    const handleInviteMember = async (email, role) => {
+        const user = await inviteMember(email, role)
+        if (user) {
             toastNotification('success', 'Le membre a bien été invité');
-            setUsers(withNameUsers(users));
+            fetchUsers();
         }
-    }, []);
+        
+    };
 
-    const resetOpenMembers = useCallback(async () => {
+    const resetOpenMembers = async () => {
         if (window.confirm('Es tu sûr de vouloir remettre à 0 les points OPEN de tous les membres?')) {
             await resetAllOpen();
-            history.go(0);
+            fetchUsers();
         }
-    }, [fetchUsers]);
+    };
 
-    const handleAdd = useCallback(async (id, open) => {
+    const handleAdd = async (id, open) => {
         await updateOpenToUser(id, open + 1);
-        history.go(0);
-    }, [fetchUsers]);
+        fetchUsers();
+    };
 
-    const handleMinus = useCallback(async (id, open) => {
+    const handleMinus = async (id, open) => {
         await updateOpenToUser(id, open - 1);
-        history.go(0);
-    }, [fetchUsers]);
+        fetchUsers();
+    };
 
-    const resetOpenMember = useCallback(async id => {
+    const resetOpenMember = async id => {
         await updateOpenToUser(id, 0);
-        history.go(0);
-    }, [fetchUsers]);
+        fetchUsers();
+    };
 
-    const handleDeleteMember = useCallback(async id => {
+    const handleDeleteMember = async id => {
         if (window.confirm('Es tu sûr de vouloir supprimer ce membre?')) {
-            const result = await deleteMember(id);
-            if (result) {
-                toastNotification('success', 'Le membre a bien été supprimé');
-                history.go(0);
-            }
+            await deleteMember(id);
+            toastNotification('success', 'Le membre a bien été supprimé');
+            fetchUsers();
         }
-    }, [role])
+    };
 
     const actions = {
         labels: ['copyToken', 'reset', 'delete'],

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -9,7 +9,7 @@ import AppInput from '../../components/AppInput';
 import UserContext from '../../contexts/UserContext';
 import { jsonParse } from '../../helpers/helper';
 import { addEvent } from '../../services/eventService';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { toastNotification } from '../../helpers/Toastify';
 
 const NewEvent = () => {
@@ -27,14 +27,14 @@ const NewEvent = () => {
     const { user } = useContext(UserContext);
     const { id: userId } = jsonParse(user);
 
-    const onSubmit = useCallback(async data => {
+    const onSubmit = async data => {
         const event = await addEvent({...data, date: new Date(data.date), userId });
 
         if (event) {
             toastNotification('success', 'Sortie créée');
-            history.push('/events', 'refresh')
+            history.push(`/events/${event.id}`)
         }
-    })
+    };
     
     return (
         <div className="container">

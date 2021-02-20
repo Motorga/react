@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { Plus } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router-dom';
@@ -25,7 +25,6 @@ const Events = () => {
 
     if (history.location.state === 'refresh') {
         history.push('/events');
-        history.go(0);
     }
 
     const fetchEvents = async () => {
@@ -43,15 +42,15 @@ const Events = () => {
         fetchEvents();
     }, []);
 
-    const handleAddEventClick = useCallback(() => {
+    const handleAddEventClick = () => {
         history.push(`/events/new`);
-    }, []);
+    };
 
-    const handleInfoEvent = useCallback(id => {
+    const handleInfoEvent = id => {
         history.push(`/events/${id}`);
-    }, [])
+    };
 
-    const handleParticipateEvent = useCallback(async (id, connectOrDisconnect) => {
+    const handleParticipateEvent = async (id, connectOrDisconnect) => {
         const result = await addParticipantToEvent(connectOrDisconnect, id, userId);
         if (result) {
             let message = '';
@@ -61,20 +60,20 @@ const Events = () => {
                 message = 'Vous avez été retiré de la liste des participants';
             }
             toastNotification('success', message);
-            history.go(0);
+            fetchEvents();
         }
-    }, [fetchEvents, userId]);
+    };
 
-    const handleDeleteEvent = useCallback(async id => {
+    const handleDeleteEvent = async id => {
         if (window.confirm('Es tu sûr de vouloir supprimer cette sortie?')) {
             const result = await deleteEvent(id);
     
             if (result) {
                 toastNotification('success', 'Sortie supprimée');
-                history.go(0);
+                fetchEvents();
             }
         }
-    }, [fetchEvents]);
+    };
 
     const actions = {
         labels: ['info', 'participate', 'deleteEvent'],

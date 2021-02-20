@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { toastNotification } from '../../helpers/Toastify';
@@ -8,9 +8,9 @@ import { getEvent } from '../../services/eventService';
 const Event = () => {
     const history = useHistory();
     const { id } = useParams();
-    const [event, setEvent] = useState({});
+    const [event, setEvent] = useState();
 
-    const fetchEvent = useCallback(async id => {
+    const fetchEvent = async id => {
         const event = await getEvent(id);
 
         if (!event) {
@@ -19,7 +19,7 @@ const Event = () => {
         }
 
         setEvent(event)
-    }, [history])
+    };
 
     useEffect(() => {
         if (!id) {
@@ -29,6 +29,19 @@ const Event = () => {
 
         fetchEvent(id)
     }, [id, history]);
+
+    if (!event) {
+        return (
+            <div className="container">
+                <Button className="mt-2" variant="secondary" onClick={() => history.push('/events')}>
+                    Retour
+                </Button>
+                <div className="text-center mb-5">
+                    <h3>Informations de la sortie en chargement...</h3>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="container">
@@ -45,10 +58,14 @@ const Event = () => {
                 </div>
                 <div className="col-4 offset-2">
                     <h4>Date:</h4>
-                    {formatDateTime(event.date)}
+                    <p>{formatDateTime(event.date)}</p>
+                    <h4>Organisateur:</h4>
+                    <p>
+                        {event.owner.firstname} {event.owner.lastname}
+                    </p>
                     <h4>Participants:</h4>
-                    {event.participants?.map(participant => (
-                        <p>
+                    {event.participants?.map((participant, index) => (
+                        <p key={index}>
                             {participant.firstname} {participant.lastname}
                         </p>
                     ))}
