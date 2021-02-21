@@ -4,12 +4,14 @@ import { ArrowCounterclockwise } from 'react-bootstrap-icons';
 import AppBottomTooltip from '../components/AppBottomTooltip';
 import AppTable from '../components/AppTable/index';
 import InviteUser from '../components/InviteUser';
+import LoadingContext from '../contexts/LoadingContext';
 import UserContext from '../contexts/UserContext';
 import { jsonParse } from '../helpers/helper';
 import { toastNotification } from '../helpers/Toastify';
 import { getUsers, updateOpenToUser, resetAllOpen, inviteMember, deleteMember } from '../services/userService';
 
 const Members = () => {
+    const { setLoading } = useContext(LoadingContext)
     const { user } = useContext(UserContext);
     const { role } = jsonParse(user);
 
@@ -54,7 +56,9 @@ const Members = () => {
     }, []);
 
     const handleInviteMember = async (email, role) => {
+        setLoading(true);
         const user = await inviteMember(email, role)
+        setLoading(false);
         if (user) {
             toastNotification('success', 'Le membre a bien été invité');
             fetchUsers();

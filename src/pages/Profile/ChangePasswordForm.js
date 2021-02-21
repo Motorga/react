@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -23,13 +23,13 @@ const ChangePasswordForm = ({ setChangePassword }) => {
     const { user } = useContext(UserContext);
     const { email } = jsonParse(user);
 
-    const onSubmit = useCallback(async ({ oldPassword, password }) => {
+    const onSubmit = async ({ oldPassword, password }) => {
         const result = await changePassword(email, oldPassword, password);
         if (result) {
             toastNotification('success', 'Votre mot de passe a été modifié');
             setChangePassword(false);
         }
-    }, []);
+    };
 
     return (
         <div className="col-8 offset-2 col-sm-8 offset-sm-2 col-lg-4 offset-lg-4">
