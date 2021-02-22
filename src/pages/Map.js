@@ -75,7 +75,7 @@ const Map = () => {
             </div>
             <div className="d-flex flex-row-reverse align-items-center mb-2">
                 <Button variant="success" onClick={() => handleAddMarker()}>Valider cette nouvelle position</Button>
-                <MarkerColorChoice setColor={setColor} />
+                <MarkerColorChoice color={color} setColor={setColor} />
             </div>
             {/* center = Paris */}
             <MapContainer center={[48.8581817, 2.3454923]} zoom={10} scrollWheelZoom={true} style={{height: "500px"}}>
