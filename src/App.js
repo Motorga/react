@@ -20,6 +20,7 @@ import Events from './pages/Events/index';
 import Event from './pages/Events/Event';
 import NewEvent from './pages/Events/NewEvent';
 import EditEvent from './pages/Events/EditEvent';
+import Map from './pages/Map';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/index.css';
@@ -57,6 +58,9 @@ const App = () => {
                             </PublicRoute>
                             <PrivateRoute exact path="/members">
                                 <Members />
+                            </PrivateRoute>
+                            <PrivateRoute exact path="/map">
+                                <Map />
                             </PrivateRoute>
                             <PrivateRoute exact path="/events">
                                 <Events />
