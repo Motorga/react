@@ -80,8 +80,7 @@ const Map = () => {
             {/* center = Paris */}
             <MapContainer center={[48.8581817, 2.3454923]} zoom={10} scrollWheelZoom={true} style={{height: "500px"}}>
                 <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`}
                 />
                 {markers.map((marker, index) => (
                     <Marker
