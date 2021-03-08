@@ -31,7 +31,7 @@ const Events = () => {
 
     const fetchEvents = async () => {
         const events = await getEvents()
-        const mappedEvents = events.map(event => ({
+        const mappedEvents = events?.map(event => ({
             ...event,
             date: format(new Date(event.date), 'dd/MM/yyyy HH:mm'),
             ownerName: `${event.owner.firstname} ${event.owner.lastname}`,
