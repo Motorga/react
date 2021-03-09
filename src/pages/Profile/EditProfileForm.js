@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import AppInput from '../../components/AppInput';
 import AppSelect from '../../components/AppSelect';
 import UserContext from '../../contexts/UserContext';
+import LoadingContext from '../../contexts/LoadingContext';
 import { jsonStringify } from '../../helpers/helper';
 import { toastNotification } from '../../helpers/Toastify';
 import { editMember } from '../../services/userService';
@@ -21,6 +22,7 @@ const promotions = [
 ];
 
 const EditProfileForm = ({ user, setEditProfile }) => {
+    const { setLoading } = useContext(LoadingContext)
     const promotionsValues = promotions.map(promotion => promotion.value);
     const { setUser } = useContext(UserContext);
 
@@ -38,16 +40,18 @@ const EditProfileForm = ({ user, setEditProfile }) => {
 
     const {id, email, lastname, firstname, promotion, bike} = user;
 
-    const onSubmit = useCallback(({ email, lastname, firstname, promotion, bike }) => {
+    const onSubmit = ({ email, lastname, firstname, promotion, bike }) => {
+        setLoading(true);
         editMember(id, email, lastname, firstname, promotion, bike)
         .then(user => {
             if (user) {
                 setUser(jsonStringify(user));
                 setEditProfile(false);
                 toastNotification('success', 'Profil mis à jour');
+                setLoading(false);
             }
         });
-    }, [id, setUser, setEditProfile]);
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

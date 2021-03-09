@@ -23,7 +23,8 @@ const EditEvent = () => {
     };
 
     const onSubmit = async data => {
-        updateEvent({...data, id: event.id})
+        await updateEvent({...data, id: event.id});
+        history.push('/events');
     };
 
     useEffect(() => {

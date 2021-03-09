@@ -14,6 +14,7 @@ const Members = () => {
     const { setLoading } = useContext(LoadingContext)
     const { user } = useContext(UserContext);
     const { role } = jsonParse(user);
+    console.log(user, role)
 
     const [ users, setUsers ] = useState([]);
     const commonCols = [
@@ -46,8 +47,10 @@ const Members = () => {
             status = ['ENABLED', 'PENDING', 'DISABLED']
         }
         
+        setLoading(true);
         getUsers(status).then(users => {
             setUsers(withNameUsers(users));
+            setLoading(false)
         })
     };
 
@@ -68,28 +71,33 @@ const Members = () => {
 
     const resetOpenMembers = async () => {
         if (window.confirm('Es tu sûr de vouloir remettre à 0 les points OPEN de tous les membres?')) {
+            setLoading(true);
             await resetAllOpen();
             fetchUsers();
         }
     };
 
     const handleAdd = async (id, open) => {
+        setLoading(true);
         await updateOpenToUser(id, open + 1);
         fetchUsers();
     };
 
     const handleMinus = async (id, open) => {
+        setLoading(true);
         await updateOpenToUser(id, open - 1);
         fetchUsers();
     };
 
     const resetOpenMember = async id => {
+        setLoading(true);
         await updateOpenToUser(id, 0);
         fetchUsers();
     };
 
     const handleDeleteMember = async id => {
         if (window.confirm('Es tu sûr de vouloir supprimer ce membre?')) {
+            setLoading(true);
             await deleteMember(id);
             toastNotification('success', 'Le membre a bien été supprimé');
             fetchUsers();

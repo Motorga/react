@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 
 import AppTable from '../../components/AppTable';
 import UserContext from '../../contexts/UserContext';
+import LoadingContext from '../../contexts/LoadingContext';
 import { jsonParse } from '../../helpers/helper';
 import { toastNotification } from '../../helpers/Toastify';
 import { getEvents, addParticipantToEvent, deleteEvent } from '../../services/eventService';
@@ -21,6 +22,7 @@ const Events = () => {
 
     const history = useHistory();
 
+    const { setLoading } = useContext(LoadingContext)
     const { user } = useContext(UserContext);
     const { id: userId } = jsonParse(user);
     const [events, setEvents] = useState([]);
@@ -30,6 +32,7 @@ const Events = () => {
     }
 
     const fetchEvents = async () => {
+        setLoading(true);
         const events = await getEvents()
         const mappedEvents = events?.map(event => ({
             ...event,
@@ -38,6 +41,7 @@ const Events = () => {
             countParticipants: event.participants?.length || 0
         }))
 
+        setLoading(false);
         setEvents(mappedEvents);
     }
 
@@ -54,7 +58,9 @@ const Events = () => {
     };
 
     const handleParticipateEvent = async (id, connectOrDisconnect) => {
+        setLoading(true);
         const result = await addParticipantToEvent(connectOrDisconnect, id, userId);
+        setLoading(false);
         if (result) {
             let message = '';
             if (connectOrDisconnect === 'connect') {
@@ -73,7 +79,9 @@ const Events = () => {
 
     const handleDeleteEvent = async id => {
         if (window.confirm('Es tu sûr de vouloir supprimer cette sortie?')) {
+            setLoading(true);
             const result = await deleteEvent(id);
+            setLoading(false);
     
             if (result) {
                 toastNotification('success', 'Sortie supprimée');

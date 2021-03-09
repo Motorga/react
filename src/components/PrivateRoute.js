@@ -5,6 +5,7 @@ import TokenContext from '../contexts/TokenContext';
 import UserContext from '../contexts/UserContext';
 import { isLoggedIn } from '../helpers/helper';
 import Header from './Header';
+import Loader from './Loader';
 
 const PrivateRoute = ({ children, ...rest }) => {
     const { token, setToken } = useContext(TokenContext);
@@ -30,6 +31,7 @@ const PrivateRoute = ({ children, ...rest }) => {
 
                 return (
                     <>
+                        <Loader />
                         <Header />
                         {children}
                     </>

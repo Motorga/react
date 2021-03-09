@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvent } from 'react-leaflet'
 import { divIcon } from 'leaflet';
 import UserContext from '../contexts/UserContext';
+import LoadingContext from '../contexts/LoadingContext';
 import { jsonParse } from '../helpers/helper';
 import { getMarkers, addMarker, deleteMarker } from '../services/markerService';
 import MarkerColorChoice from '../components/MarkerColorChoice';
@@ -12,6 +13,7 @@ import MarkerCustomIcon from '../components/MarkerCustomIcon';
 import { toastNotification } from '../helpers/Toastify';
 
 const Map = () => {
+    const { setLoading } = useContext(LoadingContext)
     const { user } = useContext(UserContext);
     const { id, lastname, firstname, bike, role } = jsonParse(user);
     const [ markers, setMarkers ] = useState([]);
@@ -37,7 +39,9 @@ const Map = () => {
     }
 
     const fetchMarkers = async () => {
+        setLoading(true);
         const locations = await getMarkers();
+        setLoading(false);
         if (locations) {
             setMarkers(locations.map(location => ({
                 ...location,
@@ -52,7 +56,9 @@ const Map = () => {
     }, []);
 
     const handleAddMarker = async () => {
+        setLoading(true);
         const result = await addMarker({color, position, userId: id});
+        setLoading(false);
         if (result) {
             toastNotification('success', 'Position mis à jour');
             setPosition(null);
@@ -61,7 +67,9 @@ const Map = () => {
     }
 
     const handleDeleteMarker = async (id) => {
+        setLoading(true);
         const result = await deleteMarker(id);
+        setLoading(false);
         if (result) {
             toastNotification('success', 'Position supprimée');
             fetchMarkers();

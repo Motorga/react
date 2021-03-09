@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import AppInput from '../../components/AppInput';
 import { jsonParse } from '../../helpers/helper';
 import UserContext from '../../contexts/UserContext';
+import LoadingContext from '../../contexts/LoadingContext';
 import { changePassword } from '../../services/authService';
 import { toastNotification } from '../../helpers/Toastify';
 
@@ -20,11 +21,14 @@ const ChangePasswordForm = ({ setChangePassword }) => {
         resolver: yupResolver(validationSchema)
     });
 
+    const { setLoading } = useContext(LoadingContext)
     const { user } = useContext(UserContext);
     const { email } = jsonParse(user);
 
     const onSubmit = async ({ oldPassword, password }) => {
+        setLoading(true);
         const result = await changePassword(email, oldPassword, password);
+        setLoading(false);
         if (result) {
             toastNotification('success', 'Votre mot de passe a été modifié');
             setChangePassword(false);

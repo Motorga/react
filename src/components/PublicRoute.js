@@ -3,6 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 
 import TokenContext from '../contexts/TokenContext';
 import { isLoggedIn } from '../helpers/helper';
+import Loader from './Loader';
 
 const PublicRoute = ({ children, ...rest }) => {
     const { token } = useContext(TokenContext);
@@ -19,7 +20,10 @@ const PublicRoute = ({ children, ...rest }) => {
                         }}
                     />
                 ) : (
-                    children
+                    <>
+                        <Loader />
+                        {children}
+                    </>
                 )
             }
         />
