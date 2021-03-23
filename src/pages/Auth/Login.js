@@ -11,8 +11,10 @@ import UserContext from '../../contexts/UserContext';
 import TokenContext from '../../contexts/TokenContext';
 import { jsonStringify } from '../../helpers/helper';
 import AppInput from '../../components/AppInput';
+import LoadingContext from '../../contexts/LoadingContext';
 
 const Login = () => {
+    const { loading, setLoading } = useContext(LoadingContext);
     const { setUser } = useContext(UserContext);
     const { setToken } = useContext(TokenContext);
     const history = useHistory();
@@ -29,7 +31,9 @@ const Login = () => {
     });
 
     const onSubmit = useCallback(({ email, password }, event) => {
+        setLoading(true);
         login(email, password).then((result) => {
+            setLoading(false);
             if (result?.token) {
                 setToken(result.token);
                 const user = jwt_decode(result.token);
@@ -50,9 +54,18 @@ const Login = () => {
                         <AppInput label="Email" name="email" type="email" required register={register} errors={errors} />
                         <AppInput label="Mot de passe" name="password" type="password" required register={register} errors={errors} />
                         <div className="text-center">
-                            <Button variant="primary" type="submit">
-                                Connexion
-                            </Button>
+                            {loading ? (
+                                <Button variant="primary" type="submit" disabled={loading}>
+                                    <div className="spinner-border text-light mr-2" style={{width: "24px", height: "24px"}}>
+                                        <span className="sr-only">Loading...</span>
+                                    </div>
+                                    Connexion...
+                                </Button>
+                            ) : (
+                                <Button variant="primary" type="submit">
+                                    Connexion
+                                </Button>
+                            )}
                         </div>
                         <div className="mt-3 text-center">
                             <Link to="forgotPassword" className="btn-link pr-0">Mot de passe oublié</Link>

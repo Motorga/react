@@ -1,10 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { Plus } from 'react-bootstrap-icons';
-import LoadingContext from '../contexts/LoadingContext';
 
-const InviteUser = ({ handleInviteMember }) => {
-    const { loading } = useContext(LoadingContext);
+const InviteUser = ({ handleInviteMember, loadingInvitation }) => {
     const [ email, setEmail ] = useState('');
     const [ role, setRole ] = useState('USER')
 
@@ -26,16 +24,16 @@ const InviteUser = ({ handleInviteMember }) => {
                 />
                 <InputGroup.Append>
                     <Button
-                        disabled={loading}
+                        disabled={loadingInvitation}
                         onClick={() => {
-                            if(!loading) {
+                            if(!loadingInvitation) {
                                 handleInviteMember(email, role);
                                 setEmail('');
                             }
                         }}
                     >
                         <div className="d-flex align-items-center">
-                            {loading ? (
+                            {loadingInvitation ? (
                                 <>
                                     <div className="spinner-border text-light mr-2" style={{width: "24px", height: "24px"}}>
                                         <span className="sr-only">Loading...</span>

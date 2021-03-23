@@ -14,8 +14,8 @@ const Members = () => {
     const { setLoading } = useContext(LoadingContext)
     const { user } = useContext(UserContext);
     const { role } = jsonParse(user);
-    console.log(user, role)
 
+    const [ loadingInvitation, setLoadingInvitation ] = useState(false);
     const [ users, setUsers ] = useState([]);
     const commonCols = [
         { label: 'Nom et prénom', key: 'name' },
@@ -60,8 +60,10 @@ const Members = () => {
 
     const handleInviteMember = async (email, role) => {
         setLoading(true);
+        setLoadingInvitation(true);
         const user = await inviteMember(email, role)
         setLoading(false);
+        setLoadingInvitation(false);
         if (user) {
             toastNotification('success', 'Le membre a bien été invité');
             fetchUsers();
@@ -120,7 +122,7 @@ const Members = () => {
             { role === 'ADMIN' && (
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <div className="col-5">
-                        <InviteUser handleInviteMember={handleInviteMember} />
+                        <InviteUser handleInviteMember={handleInviteMember} loadingInvitation={loadingInvitation} />
                     </div>
                     <AppBottomTooltip tooltipText="Reset tous les points de tous les membres">
                         <Button onClick={resetOpenMembers} variant="dark"> <ArrowCounterclockwise size={24} />&nbsp;Reset all</Button>
