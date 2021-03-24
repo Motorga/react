@@ -11,8 +11,3 @@ npm install
 ```console
 npm start
 ```
-
-## Start in prod
-```console
-npm run build
-```
